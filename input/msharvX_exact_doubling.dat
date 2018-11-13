@@ -1,0 +1,60 @@
+**---------------------------------------------
+**         msharv038.dat    06/06/2017
+**
+** stack con 3 imanes, 2 separadores (para sumar masa y aumentar la carrera)
+** Imanes extremos de 5x1mm (2 x 0.5mm)
+** 
+**----------------------------------------------
+*NODE
+    1,     0.0,	0.0,	0.0
+    2,     0.0,	0.0,	0.022
+    3,    -0.003
+	4,    -0.013
+	5,     0.003
+	6,     0.013	
+**----------------------------------------------
+**              DISCRETE ELEMENTS
+**----------------------------------------------
+*****ELEMENT, TYPE=SPRINGNL2,   NAME=msharv38_simulado_N32
+**	 5.15022543e+00, 5.51293677e+04,  9.79722756e+08
+***ELEMENT, TYPE=SPRINGNL2,   NAME=msharv38_experimental
+**	 1.00978972e+01, -1.32032324e+05,  1.78428769e+09
+***ELEMENT, TYPE=SPRINGNL2,   NAME=msharv38_simulado_N37
+**	6.72849063, 5.94233719e+04,  1.34271034e+09 
+*ELEMENT, TYPE=SPRINGPOLY,   NAME=msharv38_experimental2
+	6.59798072, 5.51346060e+04,  2.51188171e+09, 0.0		
+*ELEMENT, TYPE=DAMPERF1,   NAME=damp
+	0.05, 0.00
+*ELEMENT, TYPE=MASS,       NAME=mass
+	0.0075
+*ELEMENT, TYPE=MAGNET,     NAME=magnet,     FLUX=NUMERIC,   FILE=msharv038_2.flux
+	2
+*ELEMENT, TYPE=COIL,       NAME=coilbot1,    WINDING=POSITIVE, AWG=42
+	3,  1554,    0.012,   274.6,   0.006
+*ELEMENT, TYPE=COIL,       NAME=coilbot2,    WINDING=NEGATIVE, AWG=42
+	4,  2854,    0.012,   538.0,   0.014
+*ELEMENT, TYPE=COIL,       NAME=coiltop1,    WINDING=NEGATIVE, AWG=42
+	5,  1966,    0.012,   345.0,   0.006
+*ELEMENT, TYPE=COIL,       NAME=coiltop2,    WINDING=POSITIVE, AWG=42
+	6,  4923,    0.012,   928.0,   0.0145
+*ELEMENT, TYPE=ELOAD,   NAME=Load
+	0,  100.0 , 2.0,  	0.0E-6 
+**------------------------------------------------
+**              DISCRETE MODEL
+**------------------------------------------------
+*DISCRETE SYSTEM, TYPE=REC3, FORMULATION=RELATIVE, MOTION=LOCAL, DAMPING=EXACT
+	1,  2
+	msharv38_experimental2
+	damp
+	mass
+    coilbot1, coilbot2, coiltop1, coiltop2
+    magnet
+    Load
+*BASE ACCELERATION,  NAME=test,  TYPE=SWEEP
+	1,	3,  20.0,	12.0,  12.0	
+*GRAVITY, NAME=gravedad
+	1, 0.0, 0.0, 0.0
+*SOLUTION, NAME=transient, TYPE=DIRECT, ALGORITHM=RK4
+	0.0, 51000.0, 1.0
+*END SYSTEM
+*END
